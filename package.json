@@ -7,9 +7,9 @@
   "readmeFilename": "README.md",
   "scripts": {
     "postinstall": "tsd install",
-    "pretest": "tsc src/**/*.ts test/**/*.ts --module commonjs --outDir dist",
+    "pretest": "tsc src/*.ts src/**/*.ts test/**/*.ts --module commonjs --outDir dist",
     "test": "mocha dist/test/**/*.spec.js",
-    "prepublish": "npm run pretest && browserify dist/src/targets/Window.js --outfile dist/dqwixx-logic.js"
+    "prepublish": "npm run pretest && browserify dist/src/window.js --outfile dist/dqwixx-logic.js"
   },
   "devDependencies": {
     "browserify": "^13.0.1",

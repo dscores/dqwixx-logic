@@ -66,7 +66,7 @@ function blue(): Row {
   return row;
 }
 
-export default function mixed(board: Board): Board {
+export default function mixedColors(board: Board): Board {
   board.setRows([red(), yellow(), green(), blue()]);
   board.setFails(4);
   return board;
