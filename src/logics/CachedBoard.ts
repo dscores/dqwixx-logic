@@ -4,6 +4,12 @@ import Row from './Row';
 export default class CachedBoard extends Board {
   private colorPoints = {};
 
+  public resume(board): Board {
+    super.resume(board);
+    this.colorPoints = {};
+    return this;
+  }
+
   public setRows(rows: Array<Row>) {
     super.setRows(rows);
     this.colorPoints = {};

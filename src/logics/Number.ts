@@ -14,6 +14,11 @@ export default class Number {
     this.label = label;
   }
 
+  public resume(state: NumberState): Number {
+    this.state = state;
+    return this;
+  }
+
   public getColor(): string {
     return this.color;
   }

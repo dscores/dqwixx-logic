@@ -1,11 +1,17 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
+var Row_1 = require('./Row');
 var Fail_1 = require('./Fail');
 var Board = (function () {
     function Board() {
         this.rows = [];
         this.fails = [];
     }
+    Board.prototype.resume = function (board) {
+        this.rows = board.rows.map(function (row) { return (new Row_1["default"]().resume(row)); });
+        this.fails = board.fails.map(function (fail) { return (new Fail_1["default"]()).resume(fail.state); });
+        return this;
+    };
     Board.prototype.setRows = function (rows) {
         this.rows = rows;
     };
@@ -74,7 +80,7 @@ var Board = (function () {
 exports.__esModule = true;
 exports["default"] = Board;
 
-},{"./Fail":3}],2:[function(require,module,exports){
+},{"./Fail":3,"./Row":5}],2:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -88,6 +94,11 @@ var CachedBoard = (function (_super) {
         _super.apply(this, arguments);
         this.colorPoints = {};
     }
+    CachedBoard.prototype.resume = function (board) {
+        _super.prototype.resume.call(this, board);
+        this.colorPoints = {};
+        return this;
+    };
     CachedBoard.prototype.setRows = function (rows) {
         _super.prototype.setRows.call(this, rows);
         this.colorPoints = {};
@@ -121,6 +132,10 @@ var Fail = (function () {
     function Fail() {
         this.state = FailState.Open;
     }
+    Fail.prototype.resume = function (state) {
+        this.state = state;
+        return this;
+    };
     Fail.prototype.failFail = function () {
         if (!this.isFailOpen()) {
             return;
@@ -152,6 +167,10 @@ var Number = (function () {
         this.color = color;
         this.label = label;
     }
+    Number.prototype.resume = function (state) {
+        this.state = state;
+        return this;
+    };
     Number.prototype.getColor = function () {
         return this.color;
     };
@@ -192,11 +211,19 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var Number_1 = require('./Number');
 var Row = (function (_super) {
     __extends(Row, _super);
     function Row() {
         _super.apply(this, arguments);
     }
+    Row.prototype.resume = function (row) {
+        for (var _i = 0, row_1 = row; _i < row_1.length; _i++) {
+            var number = row_1[_i];
+            this.push((new Number_1["default"](number.color, number.label)).resume(number.state));
+        }
+        return this;
+    };
     Row.prototype.markNumber = function (numberIndex) {
         if (this.isRowClosed()) {
             return;
@@ -252,7 +279,7 @@ var Row = (function (_super) {
 exports.__esModule = true;
 exports["default"] = Row;
 
-},{}],6:[function(require,module,exports){
+},{"./Number":4}],6:[function(require,module,exports){
 "use strict";
 var CachedBoard_1 = require('../logics/CachedBoard');
 var classic_1 = require('../themes/classic');

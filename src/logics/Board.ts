@@ -5,6 +5,12 @@ export default class Board {
   private rows: Array<Row> = [];
   private fails: Array<Fail> = [];
 
+  public resume(board): Board {
+    this.rows = board.rows.map(row => (new Row().resume(row)));
+    this.fails = board.fails.map(fail => (new Fail()).resume(fail.state));
+    return this;
+  }
+
   public setRows(rows: Array<Row>) {
     this.rows = rows;
   }

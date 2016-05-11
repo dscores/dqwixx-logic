@@ -1,6 +1,13 @@
 import Number from './Number';
 
 export default class Row extends Array<Number> {
+  public resume(row): Row {
+    for (const number of row) {
+      this.push((new Number(number.color, number.label)).resume(number.state));
+    }
+    return this;
+  }
+
   public markNumber(numberIndex: number): string {
     if (this.isRowClosed()) {
       return;

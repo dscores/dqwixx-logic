@@ -6,6 +6,11 @@ enum FailState {
 export default class Fail {
   private state: FailState = FailState.Open;
 
+  public resume(state: FailState): Fail {
+    this.state = state;
+    return this;
+  }
+
   public failFail() {
     if (!this.isFailOpen()) {
       return;

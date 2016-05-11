@@ -80,6 +80,36 @@ describe('[class] Board (with classic theme)', () => {
     it('should have 26 points', () => {
       expect(this.board.getPoints()).equal(29);
     });
+
+    describe('[scenario] JSON.stringify and resume the board', () => {
+      beforeEach(() => {
+        this.board.resume(JSON.parse(JSON.stringify(this.board)));
+      });
+
+      it('should still be finished', () => {
+        expect(this.board.isOpen()).false;
+        expect(this.board.isFinished()).true;
+      });
+
+      it('should still have 4 fails', () => {
+        expect(this.board.getFails().length).equal(4);
+      });
+
+      it('should still only have 36 red color points', () => {
+        expect(this.board.getColorPoints('red')).equal(36);
+        expect(this.board.getColorPoints('yellow')).equal(0);
+        expect(this.board.getColorPoints('green')).equal(0);
+        expect(this.board.getColorPoints('blue')).equal(3);
+      });
+
+      it('should still have -10 fail points', () => {
+        expect(this.board.getFailPoints()).equal(-10);
+      });
+
+      it('should still have 26 points', () => {
+        expect(this.board.getPoints()).equal(29);
+      });
+    });
   });
 
   describe('[scenario] try to do some things after finishing the board', () => {
