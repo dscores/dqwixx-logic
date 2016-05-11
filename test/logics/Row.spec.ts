@@ -27,6 +27,23 @@ describe('[class] Row', () => {
       expect(this.row.isRowClosed()).false;
     });
 
+    it('should have the last number disabled', () => {
+      expect(this.row.isNumberDisabled(10)).true;
+    });
+
+    it('should not have the rest numbers disabled', () => {
+      expect(this.row.isNumberDisabled(0)).false;
+      expect(this.row.isNumberDisabled(1)).false;
+      expect(this.row.isNumberDisabled(2)).false;
+      expect(this.row.isNumberDisabled(3)).false;
+      expect(this.row.isNumberDisabled(4)).false;
+      expect(this.row.isNumberDisabled(5)).false;
+      expect(this.row.isNumberDisabled(6)).false;
+      expect(this.row.isNumberDisabled(7)).false;
+      expect(this.row.isNumberDisabled(8)).false;
+      expect(this.row.isNumberDisabled(9)).false;
+    });
+
     it('should have all numbers open', () => {
       expect(this.row[0].isNumberOpen()).true;
       expect(this.row[1].isNumberOpen()).true;
@@ -139,6 +156,10 @@ describe('[class] Row', () => {
         expect(this.row.isRowClosed()).true;
       });
 
+      it('should not have the last number disabled', () => {
+        expect(this.row.isNumberDisabled(10)).false;
+      });
+
       it('should have some numbers marked', () => {
         expect(this.row[1].isNumberMarked()).true;
         expect(this.row[3].isNumberMarked()).true;
@@ -173,6 +194,10 @@ describe('[class] Row', () => {
       it('should still be open', () => {
         expect(this.row.isRowOpen()).true;
         expect(this.row.isRowClosed()).false;
+      });
+
+      it('should have the last number disabled', () => {
+        expect(this.row.isNumberDisabled(10)).true;
       });
 
       it('should have the last number still be open', () => {

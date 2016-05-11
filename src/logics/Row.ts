@@ -5,7 +5,7 @@ export default class Row extends Array<Number> {
     if (this.isRowClosed()) {
       return;
     }
-    if (this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5) {
+    if (this.isNumberDisabled(numberIndex)) {
       return;
     }
     for (let i = 0; i < this.length; ++i) {
@@ -43,7 +43,11 @@ export default class Row extends Array<Number> {
     return markedNumbers;
   }
 
-  private getLastNumber(): Number {
+  public isNumberDisabled(numberIndex: number): boolean {
+    return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
+  }
+
+  public getLastNumber(): Number {
     return this[this.length - 1];
   }
 

@@ -201,7 +201,7 @@ var Row = (function (_super) {
         if (this.isRowClosed()) {
             return;
         }
-        if (this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5) {
+        if (this.isNumberDisabled(numberIndex)) {
             return;
         }
         for (var i = 0; i < this.length; ++i) {
@@ -234,6 +234,9 @@ var Row = (function (_super) {
             ++markedNumbers;
         }
         return markedNumbers;
+    };
+    Row.prototype.isNumberDisabled = function (numberIndex) {
+        return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
     };
     Row.prototype.getLastNumber = function () {
         return this[this.length - 1];
