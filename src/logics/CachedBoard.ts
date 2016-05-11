@@ -10,7 +10,7 @@ export default class CachedBoard extends Board {
     return this;
   }
 
-  public setRows(rows: Array<Row>) {
+  public setRows(rows: Row[]) {
     super.setRows(rows);
     this.colorPoints = {};
   }

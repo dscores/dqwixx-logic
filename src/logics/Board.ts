@@ -11,8 +11,8 @@ interface JSONFail {
 }
 
 export default class Board {
-  private rows: Array<Row> = [];
-  private fails: Array<Fail> = [];
+  private rows: Row[] = [];
+  private fails: Fail[] = [];
 
   public resume(jsonBoard: JSONBoard): Board {
     this.rows = jsonBoard.rows.map((row: JSONNumber[]) => (new Row().resume(row)));
@@ -20,11 +20,11 @@ export default class Board {
     return this;
   }
 
-  public setRows(rows: Array<Row>) {
+  public setRows(rows: Row[]) {
     this.rows = rows;
   }
 
-  public getRows(): Array<Row> {
+  public getRows(): Row[] {
     return this.rows;
   }
 
@@ -32,7 +32,7 @@ export default class Board {
     this.fails = Array.apply({}, Array(fails)).map(() => new Fail());
   }
 
-  public getFails(): Array<Fail> {
+  public getFails(): Fail[] {
     return this.fails;
   }
 
