@@ -7,9 +7,9 @@ var Board = (function () {
         this.rows = [];
         this.fails = [];
     }
-    Board.prototype.resume = function (board) {
-        this.rows = board.rows.map(function (row) { return (new Row_1["default"]().resume(row)); });
-        this.fails = board.fails.map(function (fail) { return (new Fail_1["default"]()).resume(fail.state); });
+    Board.prototype.resume = function (jsonBoard) {
+        this.rows = jsonBoard.rows.map(function (row) { return (new Row_1["default"]().resume(row)); });
+        this.fails = jsonBoard.fails.map(function (fail) { return (new Fail_1["default"]()).resume(fail.state); });
         return this;
     };
     Board.prototype.setRows = function (rows) {
@@ -94,8 +94,8 @@ var CachedBoard = (function (_super) {
         _super.apply(this, arguments);
         this.colorPoints = {};
     }
-    CachedBoard.prototype.resume = function (board) {
-        _super.prototype.resume.call(this, board);
+    CachedBoard.prototype.resume = function (jsonBoard) {
+        _super.prototype.resume.call(this, jsonBoard);
         this.colorPoints = {};
         return this;
     };
@@ -123,11 +123,11 @@ exports["default"] = CachedBoard;
 
 },{"./Board":1}],3:[function(require,module,exports){
 "use strict";
-var FailState;
 (function (FailState) {
     FailState[FailState["Open"] = 1] = "Open";
     FailState[FailState["Failed"] = 2] = "Failed";
-})(FailState || (FailState = {}));
+})(exports.FailState || (exports.FailState = {}));
+var FailState = exports.FailState;
 var Fail = (function () {
     function Fail() {
         this.state = FailState.Open;
@@ -155,12 +155,12 @@ exports["default"] = Fail;
 
 },{}],4:[function(require,module,exports){
 "use strict";
-var NumberState;
 (function (NumberState) {
     NumberState[NumberState["Open"] = 1] = "Open";
     NumberState[NumberState["Marked"] = 2] = "Marked";
     NumberState[NumberState["Skipped"] = 3] = "Skipped";
-})(NumberState || (NumberState = {}));
+})(exports.NumberState || (exports.NumberState = {}));
+var NumberState = exports.NumberState;
 var Number = (function () {
     function Number(color, label) {
         this.state = NumberState.Open;
@@ -217,10 +217,11 @@ var Row = (function (_super) {
     function Row() {
         _super.apply(this, arguments);
     }
-    Row.prototype.resume = function (row) {
-        for (var _i = 0, row_1 = row; _i < row_1.length; _i++) {
-            var number = row_1[_i];
-            this.push((new Number_1["default"](number.color, number.label)).resume(number.state));
+    Row.prototype.resume = function (jsonRow) {
+        for (var _i = 0, jsonRow_1 = jsonRow; _i < jsonRow_1.length; _i++) {
+            var jsonNumber = jsonRow_1[_i];
+            var number = new Number_1["default"](jsonNumber.color, jsonNumber.label);
+            this.push(number.resume(jsonNumber.state));
         }
         return this;
     };

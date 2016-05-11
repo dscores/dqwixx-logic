@@ -1,9 +1,17 @@
-import Number from './Number';
+import Number, { NumberState } from './Number';
+import _Number from './Number';
+
+export interface JSONNumber {
+  color: string,
+  label: number
+  state: NumberState
+}
 
 export default class Row extends Array<Number> {
-  public resume(row): Row {
-    for (const number of row) {
-      this.push((new Number(number.color, number.label)).resume(number.state));
+  public resume(jsonRow: JSONNumber[]): Row {
+    for (const jsonNumber of jsonRow) {
+      const number: Number = new _Number(jsonNumber.color, jsonNumber.label);
+      this.push(number.resume(jsonNumber.state));
     }
     return this;
   }

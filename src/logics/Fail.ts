@@ -1,4 +1,4 @@
-enum FailState {
+export enum FailState {
   Open = 1,
   Failed
 }

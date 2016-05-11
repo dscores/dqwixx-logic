@@ -1,13 +1,22 @@
-import Row from './Row';
-import Fail from './Fail';
+import Row, { JSONNumber } from './Row';
+import Fail, { FailState } from './Fail';
+
+export interface JSONBoard {
+  rows: JSONNumber[][],
+  fails: JSONFail[]
+}
+
+interface JSONFail {
+  state: FailState
+}
 
 export default class Board {
   private rows: Array<Row> = [];
   private fails: Array<Fail> = [];
 
-  public resume(board): Board {
-    this.rows = board.rows.map(row => (new Row().resume(row)));
-    this.fails = board.fails.map(fail => (new Fail()).resume(fail.state));
+  public resume(jsonBoard: JSONBoard): Board {
+    this.rows = jsonBoard.rows.map((row: JSONNumber[]) => (new Row().resume(row)));
+    this.fails = jsonBoard.fails.map((fail: JSONFail) => (new Fail()).resume(fail.state));
     return this;
   }
 

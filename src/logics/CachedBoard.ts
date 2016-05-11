@@ -1,11 +1,11 @@
-import Board from './Board';
+import Board, { JSONBoard } from './Board';
 import Row from './Row';
 
 export default class CachedBoard extends Board {
   private colorPoints = {};
 
-  public resume(board): Board {
-    super.resume(board);
+  public resume(jsonBoard: JSONBoard): Board {
+    super.resume(jsonBoard);
     this.colorPoints = {};
     return this;
   }

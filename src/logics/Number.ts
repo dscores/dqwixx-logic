@@ -1,4 +1,4 @@
-enum NumberState {
+export enum NumberState {
   Open = 1,
   Marked,
   Skipped
