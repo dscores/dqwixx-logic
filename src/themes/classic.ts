@@ -2,17 +2,17 @@ import Board from '../logics/Board';
 import _Number from '../logics/Number';
 import Row from '../logics/Row';
 
-function Ascending(color): Row {
-  const row = new Row();
-  for (let numberLabel = 2; numberLabel <= 12; ++numberLabel) {
+function Ascending(color: string): Row {
+  const row: Row = new Row();
+  for (let numberLabel: number = 2; numberLabel <= 12; ++numberLabel) {
     row.push(new _Number(color, numberLabel));
   }
   return row;
 }
 
-function Descending(color): Row {
-  const row = new Row();
-  for (let numberLabel = 12; numberLabel >= 2; --numberLabel) {
+function Descending(color: string): Row {
+  const row: Row = new Row();
+  for (let numberLabel: number = 12; numberLabel >= 2; --numberLabel) {
     row.push(new _Number(color, numberLabel));
   }
   return row;
