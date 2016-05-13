@@ -89,10 +89,10 @@ export default class Board {
   }
 
   private countRowsClosed(): number {
-    return this.rows.filter((row: Row) => row.isRowClosed()).length;
+    return this.getRows().filter((row: Row) => row.isRowClosed()).length;
   }
 
   private countFailsFailed(): number {
-    return this.fails.filter((fail: Fail) => fail.isFailFailed()).length;
+    return this.getFails().filter((fail: Fail) => fail.isFailFailed()).length;
   }
 }
