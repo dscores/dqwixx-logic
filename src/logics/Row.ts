@@ -2,9 +2,9 @@ import Number, { NumberState } from './Number';
 import _Number from './Number';
 
 export interface JSONNumber {
-  color: string,
-  label: number
-  state: NumberState
+  color: string;
+  label: number;
+  state: NumberState;
 }
 
 export default class Row extends Array<Number> {

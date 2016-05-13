@@ -2,12 +2,12 @@ import Row, { JSONNumber } from './Row';
 import Fail, { FailState } from './Fail';
 
 export interface JSONBoard {
-  rows: JSONNumber[][],
-  fails: JSONFail[]
+  rows: JSONNumber[][];
+  fails: JSONFail[];
 }
 
 interface JSONFail {
-  state: FailState
+  state: FailState;
 }
 
 export default class Board {
