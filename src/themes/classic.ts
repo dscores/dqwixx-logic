@@ -1,25 +1,26 @@
 import Board from '../logics/Board';
+import Number from '../logics/Number';
 import _Number from '../logics/Number';
 import Row from '../logics/Row';
 
-function Ascending(color: string): Row {
-  const row: Row = new Row();
+export function Ascending(color: string): Row {
+  const numbers: Number[] = [];
   for (let numberLabel: number = 2; numberLabel <= 12; ++numberLabel) {
-    row.push(new _Number(color, numberLabel));
+    numbers.push(new _Number(color, numberLabel));
   }
-  return row;
+  return new Row().setNumbers(numbers);
 }
 
-function Descending(color: string): Row {
-  const row: Row = new Row();
+export function Descending(color: string): Row {
+  const numbers: Number[] = [];
   for (let numberLabel: number = 12; numberLabel >= 2; --numberLabel) {
-    row.push(new _Number(color, numberLabel));
+    numbers.push(new _Number(color, numberLabel));
   }
-  return row;
+  return new Row().setNumbers(numbers);
 }
 
 export default function classic(board: Board): Board {
-  board.setRows([Ascending('red'), Ascending('yellow'), Descending('green'), Descending('blue')]);
-  board.setFails(4);
-  return board;
+  return board
+    .setRows([Ascending('red'), Ascending('yellow'), Descending('green'), Descending('blue')])
+    .setFails(4);
 }

@@ -1,8 +1,9 @@
-import Row, { JSONNumber } from './Row';
+import Number from './Number';
+import Row, { JSONNumber, JSONRow } from './Row';
 import Fail, { FailState } from './Fail';
 
 export interface JSONBoard {
-  rows: JSONNumber[][];
+  rows: JSONRow[];
   fails: JSONFail[];
 }
 
@@ -15,53 +16,67 @@ export default class Board {
   private fails: Fail[] = [];
 
   public resume(jsonBoard: JSONBoard): Board {
-    this.rows = jsonBoard.rows.map((row: JSONNumber[]) => (new Row().resume(row)));
-    this.fails = jsonBoard.fails.map((fail: JSONFail) => (new Fail()).resume(fail.state));
+    this.setRows(jsonBoard.rows.map((row: JSONRow) => new Row().resume(row)));
+    jsonBoard.rows.forEach((jsonRow: JSONRow, rowIndex) => {
+      const linkedRows: Row[] = [];
+      for (const linkedRowIndex of jsonRow.linkedRowIndexes) {
+        linkedRows.push(this.rows[linkedRowIndex]);
+      }
+      this.rows[rowIndex].setLinkedRows(linkedRows);
+    });
+    this.fails = jsonBoard.fails.map((fail: JSONFail) => new Fail().resume(fail.state));
     return this;
   }
 
-  public setRows(rows: Row[]) {
+  public setRows(rows: Row[]): Board {
+    rows.forEach((row: Row, rowIndex) => {
+      row.setRowIndex(rowIndex);
+    });
     this.rows = rows;
+    return this;
   }
 
   public getRows(): Row[] {
     return this.rows;
   }
 
-  public setFails(fails: number) {
+  public setFails(fails: number): Board {
     this.fails = Array.apply({}, Array(fails)).map(() => new Fail());
+    return this;
   }
 
   public getFails(): Fail[] {
     return this.fails;
   }
 
-  public markNumber(rowIndex: number, numberIndex: number): string {
+  public markNumber(rowIndex: number, numberIndex: number): Number {
     if (this.isFinished()) {
       return;
     }
     return this.rows[rowIndex].markNumber(numberIndex);
   }
 
-  public closeRow(rowIndex: number) {
+  public closeRow(rowIndex: number): Board {
     if (this.isFinished()) {
-      return;
+      return this;
     }
     this.rows[rowIndex].closeRow();
+    return this;
   }
 
-  public failFail(failIndex: number) {
+  public failFail(failIndex: number): Board {
     if (this.isFinished()) {
-      return;
+      return this;
     }
     this.fails[failIndex].failFail();
+    return this;
   }
 
   public getColorPoints(color: string): number {
     const marked = this.getRows().map((row: Row) => row.countNumbersMarkedByColor(color))
       .reduce((colorPointsA: number, colorPointsB: number) => colorPointsA + colorPointsB, 0);
     let colorPoints = 0;
-    for (let increase = 1; increase <= marked; ++increase) {
+    for (let increase = 1; increase <= Math.min(marked, 15); ++increase) {
       colorPoints += increase;
     }
     return colorPoints;

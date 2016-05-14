@@ -3,71 +3,71 @@ import _Number from '../logics/Number';
 import Row from '../logics/Row';
 
 function red(): Row {
-  const row = new Row();
-  row.push(new _Number('yellow', 2));
-  row.push(new _Number('yellow', 3));
-  row.push(new _Number('yellow', 4));
-  row.push(new _Number('blue', 5));
-  row.push(new _Number('blue', 6));
-  row.push(new _Number('blue', 7));
-  row.push(new _Number('green', 8));
-  row.push(new _Number('green', 9));
-  row.push(new _Number('green', 10));
-  row.push(new _Number('red', 11));
-  row.push(new _Number('red', 12));
-  return row;
+  return new Row().setNumbers([
+    new _Number('yellow', 2),
+    new _Number('yellow', 3),
+    new _Number('yellow', 4),
+    new _Number('blue', 5),
+    new _Number('blue', 6),
+    new _Number('blue', 7),
+    new _Number('green', 8),
+    new _Number('green', 9),
+    new _Number('green', 10),
+    new _Number('red', 11),
+    new _Number('red', 12)
+  ]);
 }
 
 function yellow(): Row {
-  const row = new Row();
-  row.push(new _Number('red', 2));
-  row.push(new _Number('red', 3));
-  row.push(new _Number('green', 4));
-  row.push(new _Number('green', 5));
-  row.push(new _Number('green', 6));
-  row.push(new _Number('green', 7));
-  row.push(new _Number('blue', 8));
-  row.push(new _Number('blue', 9));
-  row.push(new _Number('yellow', 10));
-  row.push(new _Number('yellow', 11));
-  row.push(new _Number('yellow', 12));
-  return row;
+  return new Row().setNumbers([
+    new _Number('red', 2),
+    new _Number('red', 3),
+    new _Number('green', 4),
+    new _Number('green', 5),
+    new _Number('green', 6),
+    new _Number('green', 7),
+    new _Number('blue', 8),
+    new _Number('blue', 9),
+    new _Number('yellow', 10),
+    new _Number('yellow', 11),
+    new _Number('yellow', 12)
+  ]);
 }
 
 function green(): Row {
-  const row = new Row();
-  row.push(new _Number('blue', 12));
-  row.push(new _Number('blue', 11));
-  row.push(new _Number('blue', 10));
-  row.push(new _Number('yellow', 9));
-  row.push(new _Number('yellow', 8));
-  row.push(new _Number('yellow', 7));
-  row.push(new _Number('red', 6));
-  row.push(new _Number('red', 5));
-  row.push(new _Number('red', 4));
-  row.push(new _Number('green', 3));
-  row.push(new _Number('green', 2));
-  return row;
+  return new Row().setNumbers([
+    new _Number('blue', 12),
+    new _Number('blue', 11),
+    new _Number('blue', 10),
+    new _Number('yellow', 9),
+    new _Number('yellow', 8),
+    new _Number('yellow', 7),
+    new _Number('red', 6),
+    new _Number('red', 5),
+    new _Number('red', 4),
+    new _Number('green', 3),
+    new _Number('green', 2)
+  ]);
 }
 
 function blue(): Row {
-  const row = new Row();
-  row.push(new _Number('green', 12));
-  row.push(new _Number('green', 11));
-  row.push(new _Number('red', 10));
-  row.push(new _Number('red', 9));
-  row.push(new _Number('red', 8));
-  row.push(new _Number('red', 7));
-  row.push(new _Number('yellow', 6));
-  row.push(new _Number('yellow', 5));
-  row.push(new _Number('blue', 4));
-  row.push(new _Number('blue', 3));
-  row.push(new _Number('blue', 2));
-  return row;
+  return new Row().setNumbers([
+    new _Number('green', 12),
+    new _Number('green', 11),
+    new _Number('red', 10),
+    new _Number('red', 9),
+    new _Number('red', 8),
+    new _Number('red', 7),
+    new _Number('yellow', 6),
+    new _Number('yellow', 5),
+    new _Number('blue', 4),
+    new _Number('blue', 3),
+    new _Number('blue', 2)
+  ]);
 }
 
 export default function mixedColors(board: Board): Board {
-  board.setRows([red(), yellow(), green(), blue()]);
-  board.setFails(4);
-  return board;
+  return board
+    .setRows([red(), yellow(), green(), blue()])
+    .setFails(4);
 }

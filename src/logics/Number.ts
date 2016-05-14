@@ -23,23 +23,32 @@ export default class Number {
     return this.color;
   }
 
+  public getColors(): string[] {
+    return this.getColor().split('-');
+  }
+
+  public includesColor(color: string): boolean {
+    return this.getColors().indexOf(color) !== -1;
+  }
+
   public getLabel(): number {
     return this.label;
   }
 
-  public markNumber(): string {
+  public markNumber(): Number {
     if (!this.isNumberOpen()) {
       return;
     }
     this.state = NumberState.Marked;
-    return this.getColor();
+    return this;
   }
 
-  public skipNumber() {
+  public skipNumber(): Number {
     if (!this.isNumberOpen()) {
-      return;
+      return this;
     }
     this.state = NumberState.Skipped;
+    return this;
   }
 
   public isNumberOpen(): boolean {
