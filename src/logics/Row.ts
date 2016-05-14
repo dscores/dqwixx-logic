@@ -7,41 +7,109 @@ export interface JSONNumber {
   state: NumberState;
 }
 
-export default class Row extends Array<Number> {
-  public resume(jsonRow: JSONNumber[]): Row {
-    for (const jsonNumber of jsonRow) {
+export interface JSONRow {
+  numbers: JSONNumber[];
+  bigPoints: boolean;
+  linkedRowIndexes: number[];
+}
+
+export default class Row {
+  private rowIndex: number;
+  private numbers: Number[] = [];
+  private bigPoints: boolean = false;
+  private linkedRows: Row[] = [];
+
+  public resume(jsonRow: JSONRow): Row {
+    const numbers: Number[] = [];
+    for (const jsonNumber of jsonRow.numbers) {
       const number: Number = new _Number(jsonNumber.color, jsonNumber.label);
-      this.push(number.resume(jsonNumber.state));
+      numbers.push(number.resume(jsonNumber.state));
+    }
+    this.setNumbers(numbers);
+    if (jsonRow.bigPoints) {
+      this.enableBigPoints();
     }
     return this;
   }
 
-  public markNumber(numberIndex: number): string {
+  public toJSON() {
+    return {
+      numbers: this.getNumbers(),
+      bigPoints: this.isBigPoints(),
+      linkedRowIndexes: this.getLinkedRows().map((row: Row) => row.getRowIndex())
+    };
+  }
+
+  public setRowIndex(rowIndex: number): Row {
+    this.rowIndex = rowIndex;
+    return this;
+  }
+
+  public getRowIndex(): number {
+    return this.rowIndex;
+  }
+
+  public setNumbers(numbers: Number[]): Row {
+    this.numbers = numbers;
+    return this;
+  }
+
+  public getNumbers(): Number[] {
+    return this.numbers;
+  }
+
+  public enableBigPoints(): Row {
+    this.bigPoints = true;
+    return this;
+  }
+
+  public isBigPoints(): boolean {
+    return this.bigPoints;
+  }
+
+  public setLinkedRows(linkedRows: Row[]): Row {
+    this.linkedRows = linkedRows;
+    return this;
+  }
+
+  public getLinkedRows(): Row[] {
+    return this.linkedRows;
+  }
+
+  public markNumber(numberIndex: number): Number {
     if (this.isRowClosed()) {
       return;
     }
     if (this.isNumberDisabled(numberIndex)) {
       return;
     }
-    for (let i = 0; i < this.length; ++i) {
+    const numbers = this.getNumbers();
+    for (let i = 0; i < numbers.length; ++i) {
       if (i === numberIndex) {
-        return this[i].markNumber();
+        return numbers[i].markNumber();
       } else {
-        this[i].skipNumber();
+        numbers[i].skipNumber();
       }
     }
   }
 
-  public closeRow() {
+  public closeRow(): Row {
+    if (this.isBigPoints()) {
+      return this;
+    }
     if (this.isRowClosed()) {
-      return;
+      return this;
     }
-    for (let i = 0; i < this.length; ++i) {
-      this[i].skipNumber();
+    for (const number of this.getNumbers()) {
+      number.skipNumber();
     }
+    return this;
   }
 
   public isRowOpen(): boolean {
+    if (this.isBigPoints()) {
+      return true;
+    }
     return this.getLastNumber().isNumberOpen();
   }
 
@@ -50,27 +118,39 @@ export default class Row extends Array<Number> {
   }
 
   public countNumbersMarkedByColor(color: string): number {
-    let markedNumbers = this.filter((number: Number) => number.isNumberMarked() && number.getColor() === color).length;
+    let markedNumbers = this.getNumbers().filter((number: Number) => number.isNumberMarked() && number.includesColor(color)).length;
+    if (this.isBigPoints()) {
+      return markedNumbers;
+    }
     const lastNumber = this.getLastNumber();
-    if (lastNumber.isNumberMarked() && lastNumber.getColor() === color) {
+    if (lastNumber.isNumberMarked() && lastNumber.includesColor(color)) {
       ++markedNumbers;
     }
     return markedNumbers;
   }
 
   public isNumberDisabled(numberIndex: number): boolean {
+    if (this.isBigPoints()) {
+      for (const linkedRow of this.getLinkedRows()) {
+        if (linkedRow.getNumbers()[numberIndex].isNumberMarked()) {
+          return false;
+        }
+      }
+      return true;
+    }
     return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
   }
 
   public getLastNumber(): Number {
-    return this[this.length - 1];
+    const numbers: Number[] = this.getNumbers();
+    return numbers[numbers.length - 1];
   }
 
   private isLastNumber(numberIndex: number): boolean {
-    return this.length - 1 === numberIndex;
+    return this.getNumbers().length - 1 === numberIndex;
   }
 
   private countNumbersMarked(): number {
-    return this.filter((number: Number) => number.isNumberMarked()).length;
+    return this.getNumbers().filter((number: Number) => number.isNumberMarked()).length;
   }
 }

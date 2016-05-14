@@ -1,4 +1,5 @@
 import Board, { JSONBoard } from './Board';
+import Number from './Number';
 import Row from './Row';
 
 export default class CachedBoard extends Board {
@@ -10,17 +11,20 @@ export default class CachedBoard extends Board {
     return this;
   }
 
-  public setRows(rows: Row[]) {
+  public setRows(rows: Row[]): CachedBoard {
     super.setRows(rows);
     this.colorPoints = {};
+    return this;
   }
 
-  public markNumber(rowIndex: number, numberIndex: number): string {
-    const color = super.markNumber(rowIndex, numberIndex);
-    if (color) {
-      delete this.colorPoints[color];
+  public markNumber(rowIndex: number, numberIndex: number): Number {
+    const number: Number = super.markNumber(rowIndex, numberIndex);
+    if (number) {
+      for (const color of number.getColors()) {
+        delete this.colorPoints[color];
+      }
     }
-    return color;
+    return number;
   }
 
   public getColorPoints(color: string): number {

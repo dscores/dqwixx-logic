@@ -11,11 +11,12 @@ export default class Fail {
     return this;
   }
 
-  public failFail() {
+  public failFail(): Fail {
     if (!this.isFailOpen()) {
-      return;
+      return this;
     }
     this.state = FailState.Failed;
+    return this;
   }
 
   public isFailOpen(): boolean {

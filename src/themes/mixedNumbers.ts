@@ -3,11 +3,7 @@ import _Number from '../logics/Number';
 import Row from '../logics/Row';
 
 function row(color: string, numberLabels: number[]): Row {
-  const row = new Row();
-  for (const numberLabel of numberLabels) {
-    row.push(new _Number(color, numberLabel));
-  }
-  return row;
+  return new Row().setNumbers(numberLabels.map((numberLabel: number) => new _Number(color, numberLabel)));
 }
 
 function red(): Row {
@@ -27,7 +23,7 @@ function blue(): Row {
 }
 
 export default function mixedNumbers(board: Board): Board {
-  board.setRows([red(), yellow(), green(), blue()]);
-  board.setFails(4);
-  return board;
+  return board
+    .setRows([red(), yellow(), green(), blue()])
+    .setFails(4);
 }
