@@ -1,7 +1,0 @@
-{
-  "name": "dqwixx-logic",
-  "ignore": [
-    "*",
-    "!dist/dqwixx-logic.js"
-  ]
-}
