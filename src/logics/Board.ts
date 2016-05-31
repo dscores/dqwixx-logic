@@ -1,5 +1,5 @@
 import Number from './Number';
-import Row, { JSONNumber, JSONRow } from './Row';
+import Row, { JSONRow } from './Row';
 import Fail, { FailState } from './Fail';
 
 export interface JSONBoard {
