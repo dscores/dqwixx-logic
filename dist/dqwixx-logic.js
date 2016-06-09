@@ -341,15 +341,20 @@ var Row = (function () {
     };
     Row.prototype.isNumberDisabled = function (numberIndex) {
         if (this.isBigPoints()) {
-            for (var _i = 0, _a = this.getLinkedRows(); _i < _a.length; _i++) {
-                var linkedRow = _a[_i];
-                if (linkedRow.getNumbers()[numberIndex].isNumberMarked()) {
-                    return false;
-                }
-            }
-            return true;
+            return this.getMarkedLinkedRowIndexes(numberIndex).length === 0;
         }
         return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
+    };
+    Row.prototype.getMarkedLinkedRowIndexes = function (numberIndex) {
+        var markedLinkedRowIndexes = [];
+        var linkedRows = this.getLinkedRows();
+        for (var linkedRowIndex in linkedRows) {
+            var linkedRow = linkedRows[linkedRowIndex];
+            if (linkedRow.getNumbers()[numberIndex].isNumberMarked()) {
+                markedLinkedRowIndexes.push(linkedRowIndex);
+            }
+        }
+        return markedLinkedRowIndexes;
     };
     Row.prototype.getLastNumber = function () {
         var numbers = this.getNumbers();

@@ -131,14 +131,21 @@ export default class Row {
 
   public isNumberDisabled(numberIndex: number): boolean {
     if (this.isBigPoints()) {
-      for (const linkedRow of this.getLinkedRows()) {
-        if (linkedRow.getNumbers()[numberIndex].isNumberMarked()) {
-          return false;
-        }
-      }
-      return true;
+      return this.getMarkedLinkedRowIndexes(numberIndex).length === 0;
     }
     return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
+  }
+
+  public getMarkedLinkedRowIndexes(numberIndex: number): number[] {
+    const markedLinkedRowIndexes = [];
+    const linkedRows = this.getLinkedRows();
+    for (const linkedRowIndex in linkedRows) {
+      const linkedRow = linkedRows[linkedRowIndex];
+      if (linkedRow.getNumbers()[numberIndex].isNumberMarked()) {
+        markedLinkedRowIndexes.push(linkedRowIndex);
+      }
+    }
+    return markedLinkedRowIndexes;
   }
 
   public getLastNumber(): Number {
