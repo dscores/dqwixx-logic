@@ -131,7 +131,7 @@ export default class Row {
 
   public isNumberDisabled(numberIndex: number): boolean {
     if (this.isBigPoints()) {
-      return this.getMarkedLinkedRowIndexes(numberIndex).length === 0;
+      return !this.getMarkedLinkedRowIndexes(numberIndex).length;
     }
     return this.isLastNumber(numberIndex) && this.countNumbersMarked() < 5;
   }
